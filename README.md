@@ -1,36 +1,181 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+````markdown
+# 🟢 Ping Matrix
 
-## Getting Started
+A lightweight, developer-friendly website uptime monitoring system.
 
-First, run the development server:
+Ping Matrix continuously monitors websites, records response times, tracks uptime percentages, and provides time-series logs, all built with a modern TypeScript stack.
+
+## ✨ Why Ping Matrix?
+
+- ⚡ Lightweight & fast
+- 🧠 Clean architecture
+- 📊 Chart-ready log APIs
+- 🔁 Automated health checks
+- 🛠 Built with modern tooling
+- 📦 Easy to self-host
+
+Perfect for learning system design, monitoring architecture, and backend performance patterns.
+
+## 🚀 Features
+
+- Add and monitor multiple websites
+- Automatic health checks (every 20 seconds)
+- Parallel request control (concurrency limited)
+- Response time tracking
+- 24-hour & 7-day uptime calculation
+- Average response time metrics
+- REST APIs for log visualization
+- Indexed queries for performance
+
+## 🏗 Tech Stack
+
+- Next.js 16 (App Router)
+- Prisma v7
+- PostgreSQL
+- node-cron
+- p-limit
+- TypeScript
+
+## 📸 What It Does
+
+Ping Matrix:
+1. Registers a website  
+2. Runs scheduled health checks  
+3. Stores status + response time  
+4. Computes uptime dynamically  
+5. Exposes chart-ready API endpoints  
+
+````
+## ⚙️ Installation
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/AvijitD22/Ping-Matrix.git
+cd ping-matrix
+```
+
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL="postgresql://postgres:password@localhost:5432/postgres"
+```
+
+### 4️⃣ Run Database Migrations
+
+```bash
+npx prisma migrate dev
+```
+
+### 5️⃣ Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+### 6️⃣ Start Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs at:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🔄 How Monitoring Works
 
-To learn more about Next.js, take a look at the following resources:
+* Cron runs every 20 seconds
+* Fetch request with timeout handling
+* Concurrency limited to 5 parallel checks
+* Results stored in `UptimeLog`
+* API calculates uptime metrics dynamically
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📡 API Endpoints
 
-## Deploy on Vercel
+### ➕ Add Website
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+POST /api/add-website
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📄 Get Website Details
+
+```
+GET /api/website/:id
+```
+
+Returns:
+
+* Current status
+* Latest response time
+* 24h uptime
+* 7d uptime
+* Average response time
+* Total checks
+
+### 📊 Get Logs (Chart Ready)
+
+```
+GET /api/website/:id/logs?hours=24
+```
+
+---
+
+## 📈 Performance Considerations
+
+Recommended Prisma index:
+
+```prisma
+@@index([websiteId, checkedAt])
+```
+
+Ensures efficient time-range queries as logs grow.
+
+---
+
+## 🚀 Production Notes
+
+For production:
+
+* Use a dedicated PostgreSQL instance
+* Run monitoring in a separate worker process
+* Avoid serverless-only environments
+* Use environment-based configuration
+* Consider Redis queue for large-scale monitoring
+
+---
+
+## 🧩 Roadmap
+
+* Email / Slack alerts
+* Multi-location monitoring
+* Public status page
+* Incident tracking
+* Authentication & user accounts
+* SLA reporting
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+### ⭐ If you find this useful, consider giving it a star!
+
