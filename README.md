@@ -1,4 +1,3 @@
-````markdown
 # 🟢 Ping Matrix
 
 A lightweight, developer-friendly website uptime monitoring system.
@@ -45,7 +44,8 @@ Ping Matrix:
 4. Computes uptime dynamically  
 5. Exposes chart-ready API endpoints  
 
-````
+---
+
 ## ⚙️ Installation
 
 ### 1️⃣ Clone Repository
