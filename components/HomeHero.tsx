@@ -73,15 +73,16 @@ export const HomeHero = () => {
       };
     }
 
-    const domainRegex =
-      /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.[A-Za-z]{2,}$/;
+// If not IP, validate as domain
+const domainRegex =
+  /^(?!-)(?:[A-Za-z0-9-]{1,63}\.)+[A-Za-z]{2,}$/;
 
-    if (!domainRegex.test(hostname)) {
-      return {
-        valid: false,
-        message: "Invalid domain format.",
-      };
-    }
+if (!domainRegex.test(hostname)) {
+  return {
+    valid: false,
+    message: "Invalid domain format.",
+  };
+}
 
     return { valid: true, normalizedUrl: url.toString() };
 
