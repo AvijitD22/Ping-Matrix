@@ -13,7 +13,7 @@ export function startUptimeChecker() {
   checkAllWebsites(); // ← you'll need to extract this
 
   // Then schedule normal run
-  cron.schedule("*/20 * * * * *", async () => {
+  cron.schedule("*/5 * * * *", async () => {
     console.log(`[CRON ${new Date().toISOString()}] Starting...`);
     await checkAllWebsites();
   });
