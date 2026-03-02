@@ -2,7 +2,7 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
 
 export function checkRateLimit(
   ip: string,
-  limit = 5,        // 5 submissions
+  limit = 50,        // 5 submissions
   windowMs = 60_000 // per minute
 ): boolean {
   const now = Date.now()

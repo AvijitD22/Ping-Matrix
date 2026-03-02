@@ -45,7 +45,7 @@ const Footer = () => {
       </div>
 
       <div className="text-center">
-        <p className="font-bold text-[14vw] font-brand">PingMatrix</p>
+        <p className="font-bold text-[14vw] font-brand my-16">PingMatrix</p>
       </div>
       <div className="text-center">
         Copyright &copy; {new Date().getFullYear()} PingMatrix. All rights

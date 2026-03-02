@@ -21,75 +21,73 @@ export const HomeHero = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const validateURL = (input: string) => {
-  if (!input || input.trim() === "") {
-    return { valid: false, message: "URL is required." };
-  }
-
-  if (/\s/.test(input)) {
-    return { valid: false, message: "URL cannot contain spaces." };
-  }
-
-  let normalized = input.trim();
-
-  if (!/^https?:\/\//i.test(normalized)) {
-    normalized = "https://" + normalized;
-  }
-
-  try {
-    const url = new URL(normalized);
-    const hostname = url.hostname;
-
-    // Block localhost
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return { valid: false, message: "Localhost URLs are not allowed." };
+    if (!input || input.trim() === "") {
+      return { valid: false, message: "URL is required." };
     }
 
-    // Check if IPv4
-    const ipv4Regex =
-      /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
+    if (/\s/.test(input)) {
+      return { valid: false, message: "URL cannot contain spaces." };
+    }
 
-    const isIPv4 = ipv4Regex.test(hostname);
+    let normalized = input.trim();
 
-    if (isIPv4) {
-      // Block private IP ranges
-      const privateIPRegex =
-        /^(10\.)|(192\.168\.)|(172\.(1[6-9]|2\d|3[0-1])\.)/;
+    if (!/^https?:\/\//i.test(normalized)) {
+      normalized = "https://" + normalized;
+    }
 
-      if (privateIPRegex.test(hostname)) {
+    try {
+      const url = new URL(normalized);
+      const hostname = url.hostname;
+
+      // Block localhost
+      if (hostname === "localhost" || hostname === "127.0.0.1") {
+        return { valid: false, message: "Localhost URLs are not allowed." };
+      }
+
+      // Check if IPv4
+      const ipv4Regex =
+        /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
+
+      const isIPv4 = ipv4Regex.test(hostname);
+
+      if (isIPv4) {
+        // Block private IP ranges
+        const privateIPRegex =
+          /^(10\.)|(192\.168\.)|(172\.(1[6-9]|2\d|3[0-1])\.)/;
+
+        if (privateIPRegex.test(hostname)) {
+          return {
+            valid: false,
+            message: "Private IP addresses are not allowed.",
+          };
+        }
+
+        return { valid: true, normalizedUrl: url.toString() };
+      }
+
+      // If not IP, validate as domain
+      if (!hostname.includes(".")) {
         return {
           valid: false,
-          message: "Private IP addresses are not allowed.",
+          message: "Please enter a valid domain.",
+        };
+      }
+
+      // If not IP, validate as domain
+      const domainRegex = /^(?!-)(?:[A-Za-z0-9-]{1,63}\.)+[A-Za-z]{2,}$/;
+
+      if (!domainRegex.test(hostname)) {
+        return {
+          valid: false,
+          message: "Invalid domain format.",
         };
       }
 
       return { valid: true, normalizedUrl: url.toString() };
+    } catch {
+      return { valid: false, message: "Please enter a valid URL." };
     }
-
-    // If not IP, validate as domain
-    if (!hostname.includes(".")) {
-      return {
-        valid: false,
-        message: "Please enter a valid domain.",
-      };
-    }
-
-// If not IP, validate as domain
-const domainRegex =
-  /^(?!-)(?:[A-Za-z0-9-]{1,63}\.)+[A-Za-z]{2,}$/;
-
-if (!domainRegex.test(hostname)) {
-  return {
-    valid: false,
-    message: "Invalid domain format.",
   };
-}
-
-    return { valid: true, normalizedUrl: url.toString() };
-
-  } catch {
-    return { valid: false, message: "Please enter a valid URL." };
-  }
-};
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

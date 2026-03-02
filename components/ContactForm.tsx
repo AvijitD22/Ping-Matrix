@@ -1,5 +1,8 @@
 "use client";
 
+import React from "react";
+import { useForm, ValidationError } from "@formspree/react";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,12 +17,23 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const ContactForm = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
+  const [state, handleSubmit] = useForm("xlgwkqgv");
+
+  // Success state
+  if (state.succeeded) {
+    return (
+      <div className="container min-h-screen flex items-center justify-center">
+        <p className="text-lg font-medium">
+          We've received your message and will respond as soon as possible.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6">
-      <h2 className="text-4xl font-bold mb-8">We’re Here to Help</h2>
+    <div className="container min-h-screen mx-auto flex flex-col items-center justify-center px-6">
+      <h2 className="text-5xl font-bold mb-8">We’re Here to Help</h2>
+
       <div className="w-full max-w-md bg-card border border-border rounded-xl p-8 shadow-lg">
         <form className="space-y-6" onSubmit={handleSubmit}>
           <FieldGroup>
@@ -48,6 +62,13 @@ const ContactForm = () => {
                   <FieldDescription>
                     We will use this email to respond to your message.
                   </FieldDescription>
+
+                  {/* Email Error */}
+                  <ValidationError
+                    prefix="Email"
+                    field="email"
+                    errors={state.errors}
+                  />
                 </Field>
               </FieldGroup>
             </FieldSet>
@@ -58,13 +79,22 @@ const ContactForm = () => {
             <FieldSet>
               <FieldGroup>
                 <Field>
-                  <FieldLabel htmlFor="contact-message">Message</FieldLabel>
+                  <FieldLabel htmlFor="contact-message">
+                    Message
+                  </FieldLabel>
                   <Textarea
                     id="contact-message"
                     name="message"
                     placeholder="Write your message here..."
                     className="resize-none min-h-[120px]"
                     required
+                  />
+
+                  {/* Message Error */}
+                  <ValidationError
+                    prefix="Message"
+                    field="message"
+                    errors={state.errors}
                   />
                 </Field>
               </FieldGroup>
@@ -76,7 +106,11 @@ const ContactForm = () => {
             <FieldSet>
               <FieldGroup>
                 <Field orientation="horizontal" className="items-start gap-3">
-                  <Checkbox id="contact-consent" name="consent" required />
+                  <Checkbox
+                    id="contact-consent"
+                    name="consent"
+                    required
+                  />
                   <FieldLabel
                     htmlFor="contact-consent"
                     className="font-normal leading-snug"
@@ -90,8 +124,12 @@ const ContactForm = () => {
 
             {/* Submit */}
             <Field orientation="horizontal">
-              <Button type="submit" className="w-full">
-                Send Message
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={state.submitting}
+              >
+                {state.submitting ? "Sending..." : "Send Message"}
               </Button>
             </Field>
           </FieldGroup>
