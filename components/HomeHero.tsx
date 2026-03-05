@@ -104,7 +104,7 @@ export const HomeHero = () => {
     }
 
     // Success → continue normally
-    router.push("/detail/" + encodeURIComponent(result.normalizedUrl!));
+    router.push("/details/" + encodeURIComponent(result.normalizedUrl!));
   };
 
   return (

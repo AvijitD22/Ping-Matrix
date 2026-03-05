@@ -129,7 +129,7 @@ async function fetchTopSites(): Promise<{ results: WebsiteStatus[] }> {
     },
     body: JSON.stringify({
       urls: [
-        "https://google.com/",
+        "https://www.google.com",
         "https://amazon.com/",
         "https://www.youtube.com/",
         "https://www.facebook.com/",
@@ -153,7 +153,7 @@ async function fetchTopSites(): Promise<{ results: WebsiteStatus[] }> {
 
 export async function TopSitesTable() {
   let data = await fetchTopSites();
-  console.log("Fetched top sites data:", data); // Debug log
+  // console.log("Fetched top sites data:", data); // Debug log
 
   return (
     <div className="container mx-auto py-10 min-h-screen">
