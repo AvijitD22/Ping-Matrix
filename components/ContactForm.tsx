@@ -22,7 +22,7 @@ const ContactForm = () => {
   // Success state
   if (state.succeeded) {
     return (
-      <div className="container min-h-screen flex items-center justify-center">
+      <div className="container min-h-screen flex items-center justify-center mx-auto">
         <p className="text-lg font-medium">
           We've received your message and will respond as soon as possible.
         </p>
